@@ -36,7 +36,8 @@ public class MouseLook : MonoBehaviour
         //float mouseX = Input.GetAxis("Mouse X");
         //float mouseY = Input.GetAxis("Mouse Y");
         */
-        if (Touchscreen.current.touches.Count == 0)
+
+        /*if (Touchscreen.current.touches.Count == 0)
             return;
 
         if (EventSystem.current.IsPointerOverGameObject(Touchscreen.current.touches[0].touchId.ReadValue()))
@@ -63,7 +64,39 @@ public class MouseLook : MonoBehaviour
                 mouseY = touchDeltaPosition.y;
             }
 
+        }*/
+
+        if (Input.touchCount == 0)
+            return;
+
+        if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+        {
+            Debug.Log("touch(0) pointer over gameobj");
+            if (Input.touchCount > 1 && Input.GetTouch(1).phase == UnityEngine.TouchPhase.Moved)
+            {
+                if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(1).fingerId))
+                {
+                    Debug.Log("touch(1) pointer over gameobj");
+                    return;
+                }
+                    
+                mouseX = Input.GetTouch(1).deltaPosition.x;
+                mouseY = Input.GetTouch(1).deltaPosition.y;
+            }
         }
+        else
+        {
+            
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == UnityEngine.TouchPhase.Moved)
+            {
+                Debug.Log(" touch 0 no pointer ");
+
+                mouseX = Input.GetTouch(0).deltaPosition.x;
+                mouseY = Input.GetTouch(0).deltaPosition.y;
+            }
+
+        }
+
 
         mouseX *= mouseSensitivity;
         mouseY *= mouseSensitivity;
